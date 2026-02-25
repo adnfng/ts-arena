@@ -1,16 +1,16 @@
 # TSARENA-AGENTS
 
-Use this file as the source of truth when an agent writes code with `ts-arena`.
+Use this file when writing or reviewing code that uses `ts-arena`.
 
 ## Core rules
 
 - Import with `import Arena from "ts-arena"`.
-- Default to `arena.v3.*` methods.
-- Use `arena.legacyV2.*` only for missing V3 features.
+- Prefer `arena.v3.*`.
+- Use `arena.legacyV2.*` only for missing V3 capabilities.
 - Never hardcode tokens.
-- Read tokens from env (`ARENA_TOKEN`) or secure runtime config.
+- Read token from environment/config (`ARENA_TOKEN`).
 
-## Quick setup
+## Client setup
 
 ```ts
 import Arena from "ts-arena";
@@ -22,137 +22,81 @@ const arena = new Arena({
 
 Reuse one client instance per runtime.
 
-## Auth model
+## Auth model (important)
 
-According to the current V3 OpenAPI (`/v3/openapi.json`), all V3 operations require bearer auth except OAuth token exchange.
+The official v3 docs define three auth levels:
 
-- No token needed: `arena.v3.auth.exchangeToken(...)`
-- Token required: all other `arena.v3.*` calls
+- `Public`: no auth required
+- `Optional`: works unauthenticated, but auth can unlock additional permissioned data
+- `Required`: returns `401` without valid token
 
-If a token is missing, agents should fail fast with a setup message.
+Do not assume every endpoint needs bearer auth.
 
-## V3 endpoint map (34 operations)
+Agent behavior:
 
-### `v3.auth`
+- If token exists, send authenticated requests by default.
+- If token is missing, `Public` and `Optional` endpoints may still succeed.
+- For `Required` endpoints, prompt for auth setup when token is missing.
+- Always handle `401`, `403`, and `429`.
 
-| SDK method | HTTP route | Auth |
+## V3 method auth map (34 methods)
+
+| SDK method | HTTP route | Auth level |
 | --- | --- | --- |
-| `arena.v3.auth.exchangeToken(input)` | `POST /v3/oauth/token` | Not required |
-
-### `v3.system`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
-| `arena.v3.system.ping()` | `GET /v3/ping` | Required |
-| `arena.v3.system.openapi()` | `GET /v3/openapi` | Required |
-| `arena.v3.system.openapiJson()` | `GET /v3/openapi.json` | Required |
-
-### `v3.search`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
-| `arena.v3.search.query(input)` | `GET /v3/search` | Required |
-
-### `v3.blocks`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
-| `arena.v3.blocks.get({ id })` | `GET /v3/blocks/{id}` | Required |
+| `arena.v3.auth.exchangeToken(input)` | `POST /v3/oauth/token` | Public |
+| `arena.v3.system.ping()` | `GET /v3/ping` | Public |
+| `arena.v3.system.openapi()` | `GET /v3/openapi` | Public |
+| `arena.v3.system.openapiJson()` | `GET /v3/openapi.json` | Public |
+| `arena.v3.search.query(input)` | `GET /v3/search` | Optional |
+| `arena.v3.blocks.get({ id })` | `GET /v3/blocks/{id}` | Optional |
 | `arena.v3.blocks.create(body)` | `POST /v3/blocks` | Required |
 | `arena.v3.blocks.update({ id, body })` | `PUT /v3/blocks/{id}` | Required |
-| `arena.v3.blocks.listComments({ id, ...query })` | `GET /v3/blocks/{id}/comments` | Required |
+| `arena.v3.blocks.listComments({ id, ...query })` | `GET /v3/blocks/{id}/comments` | Optional |
 | `arena.v3.blocks.createComment({ id, body })` | `POST /v3/blocks/{id}/comments` | Required |
-| `arena.v3.blocks.listConnections({ id, ...query })` | `GET /v3/blocks/{id}/connections` | Required |
+| `arena.v3.blocks.listConnections({ id, ...query })` | `GET /v3/blocks/{id}/connections` | Optional |
 | `arena.v3.blocks.createBatch(body)` | `POST /v3/blocks/batch` | Required |
 | `arena.v3.blocks.getBatch({ batchId })` | `GET /v3/blocks/batch/{batch_id}` | Required |
-
-### `v3.channels`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
-| `arena.v3.channels.get({ id })` | `GET /v3/channels/{id}` | Required |
+| `arena.v3.channels.get({ id })` | `GET /v3/channels/{id}` | Optional |
 | `arena.v3.channels.create(body)` | `POST /v3/channels` | Required |
 | `arena.v3.channels.update({ id, body })` | `PUT /v3/channels/{id}` | Required |
 | `arena.v3.channels.remove({ id })` | `DELETE /v3/channels/{id}` | Required |
-| `arena.v3.channels.listContents({ id, ...query })` | `GET /v3/channels/{id}/contents` | Required |
-| `arena.v3.channels.listConnections({ id, ...query })` | `GET /v3/channels/{id}/connections` | Required |
-| `arena.v3.channels.listFollowers({ id, ...query })` | `GET /v3/channels/{id}/followers` | Required |
-
-### `v3.connections`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
-| `arena.v3.connections.get({ id })` | `GET /v3/connections/{id}` | Required |
+| `arena.v3.channels.listContents({ id, ...query })` | `GET /v3/channels/{id}/contents` | Optional |
+| `arena.v3.channels.listConnections({ id, ...query })` | `GET /v3/channels/{id}/connections` | Optional |
+| `arena.v3.channels.listFollowers({ id, ...query })` | `GET /v3/channels/{id}/followers` | Optional |
+| `arena.v3.connections.get({ id })` | `GET /v3/connections/{id}` | Optional |
 | `arena.v3.connections.create(body)` | `POST /v3/connections` | Required |
 | `arena.v3.connections.move({ id, body })` | `POST /v3/connections/{id}/move` | Required |
 | `arena.v3.connections.remove({ id })` | `DELETE /v3/connections/{id}` | Required |
-
-### `v3.comments`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
 | `arena.v3.comments.remove({ id })` | `DELETE /v3/comments/{id}` | Required |
-
-### `v3.users`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
 | `arena.v3.users.getCurrent()` | `GET /v3/me` | Required |
-| `arena.v3.users.get({ id })` | `GET /v3/users/{id}` | Required |
-| `arena.v3.users.listContents({ id, ...query })` | `GET /v3/users/{id}/contents` | Required |
-| `arena.v3.users.listFollowers({ id, ...query })` | `GET /v3/users/{id}/followers` | Required |
-| `arena.v3.users.listFollowing({ id, ...query })` | `GET /v3/users/{id}/following` | Required |
-
-### `v3.groups`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
-| `arena.v3.groups.get({ id })` | `GET /v3/groups/{id}` | Required |
-| `arena.v3.groups.listContents({ id, ...query })` | `GET /v3/groups/{id}/contents` | Required |
-| `arena.v3.groups.listFollowers({ id, ...query })` | `GET /v3/groups/{id}/followers` | Required |
-
-### `v3.uploads`
-
-| SDK method | HTTP route | Auth |
-| --- | --- | --- |
+| `arena.v3.users.get({ id })` | `GET /v3/users/{id}` | Optional |
+| `arena.v3.users.listContents({ id, ...query })` | `GET /v3/users/{id}/contents` | Optional |
+| `arena.v3.users.listFollowers({ id, ...query })` | `GET /v3/users/{id}/followers` | Optional |
+| `arena.v3.users.listFollowing({ id, ...query })` | `GET /v3/users/{id}/following` | Optional |
+| `arena.v3.groups.get({ id })` | `GET /v3/groups/{id}` | Optional |
+| `arena.v3.groups.listContents({ id, ...query })` | `GET /v3/groups/{id}/contents` | Optional |
+| `arena.v3.groups.listFollowers({ id, ...query })` | `GET /v3/groups/{id}/followers` | Optional |
 | `arena.v3.uploads.presign(body)` | `POST /v3/uploads/presign` | Required |
 
 ## Legacy V2 fallback map (deprecated)
 
-Use only when there is no V3 equivalent.
-
 | SDK method | HTTP route | Auth guidance |
 | --- | --- | --- |
-| `arena.legacyV2.channels.list()` | `GET /v2/channels` | Token recommended |
-| `arena.legacyV2.channels.thumb({ slug })` | `GET /v2/channels/{slug}/thumb` | Token recommended |
-| `arena.legacyV2.channels.getCollaborators({ id })` | `GET /v2/channels/{id}/collaborators` | Token typically required |
-| `arena.legacyV2.channels.addCollaborator({ id, userId })` | `POST /v2/channels/{id}/collaborators` | Token required |
-| `arena.legacyV2.channels.removeCollaborator({ id, userId })` | `DELETE /v2/channels/{id}/collaborators` | Token required |
-| `arena.legacyV2.users.primaryChannel({ id })` | `GET /v2/users/{id}/channel` | Token recommended |
+| `arena.legacyV2.channels.list()` | `GET /v2/channels` | Optional/Token recommended |
+| `arena.legacyV2.channels.thumb({ slug })` | `GET /v2/channels/{slug}/thumb` | Optional/Token recommended |
+| `arena.legacyV2.channels.getCollaborators({ id })` | `GET /v2/channels/{id}/collaborators` | Required |
+| `arena.legacyV2.channels.addCollaborator({ id, userId })` | `POST /v2/channels/{id}/collaborators` | Required |
+| `arena.legacyV2.channels.removeCollaborator({ id, userId })` | `DELETE /v2/channels/{id}/collaborators` | Required |
+| `arena.legacyV2.users.primaryChannel({ id })` | `GET /v2/users/{id}/channel` | Optional/Token recommended |
 
-## Error handling
+## Pagination and errors
 
-Catch `ArenaApiError` and surface:
+- List endpoints use `page` and `per` (`per` max 100).
+- Expect `{ data, meta }` pagination shape.
+- Handle status codes: `400`, `401`, `403`, `404`, `429`.
 
-- `status`
-- `code`
-- `details`
-- `rateLimit` (`limit`, `tier`, `windowSeconds`, `resetUnix`, `retryAfterSeconds`)
+## Contribution constraints
 
-## Pagination and query behavior
-
-- Pass explicit pagination/query fields (`page`, `per`, `sort`) where supported.
-- Array query params are serialized as comma-separated values.
-- Do not assume a single response contains all results.
-
-## Browser usage
-
-- The SDK supports browser and Node runtimes.
-- In browser apps, avoid exposing privileged tokens.
-- Prefer backend proxy patterns for authenticated operations.
-
-## Extension policy for agents
-
-- Add new methods under `v3` first.
-- Add `legacyV2` methods only as explicit deprecated fallbacks.
-- Include tests for method/route/auth behavior when extending the SDK.
+- V3-first always.
+- New V2 methods only in `legacyV2` and keep deprecated annotations.
+- Add tests for route mapping and auth behavior when extending SDK.
