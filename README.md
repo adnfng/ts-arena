@@ -1,4 +1,4 @@
-![ts-arena logo](./logo.svg)
+![ts-arena logo](./ts-arena.svg)
 
 # ts-arena
 
