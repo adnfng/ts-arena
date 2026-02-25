@@ -131,3 +131,16 @@ test("non-2xx responses throw ArenaApiError with rate-limit metadata", async () 
     }
   );
 });
+
+test("fetch is invoked with globalThis context for browser compatibility", async () => {
+  let seenThis;
+  const arena = new Arena({
+    fetch: async function () {
+      seenThis = this;
+      return jsonResponse({ ok: true });
+    }
+  });
+
+  await arena.v3.system.ping();
+  assert.equal(seenThis, globalThis);
+});

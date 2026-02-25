@@ -224,7 +224,8 @@ export class ArenaHttpClient {
   private async requestOnce<T>(input: HttpRequestInput): Promise<T> {
     const { signal, cleanup } = this.createAbortSignal(input.signal);
     try {
-      const response = await this.options.fetchImpl(
+      const response = await this.options.fetchImpl.call(
+        globalThis,
         buildUrl(input.baseUrl ?? this.options.baseUrl, input.path, input.query),
         {
           method: input.method,

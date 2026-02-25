@@ -12,6 +12,9 @@
   "license": "MIT",
   "author": "",
   "type": "module",
+  "bin": {
+    "ts-arena": "./bin/ts-arena.mjs"
+  },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -24,6 +27,8 @@
   },
   "files": [
     "dist",
+    "bin",
+    "templates",
     "README.md",
     "LICENSE"
   ],

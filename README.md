@@ -15,6 +15,7 @@
 - [Current status](#current-status)
 - [Features](#features)
 - [Installation](#installation)
+- [Agent setup](#agent-setup)
 - [Quick start](#quick-start)
 - [Client configuration](#client-configuration)
 - [API overview](#api-overview)
@@ -63,6 +64,18 @@ After npm publish, install will be:
 ```bash
 npm install ts-arena
 ```
+
+## Agent setup
+
+If you use coding agents (Codex, Claude Code, Cursor), generate a project-level guidance file:
+
+```bash
+npx ts-arena init-agents
+```
+
+This creates `TSARENA-AGENTS.md` in your project root.
+
+`ts-arena` does not auto-write files during `npm install`; agent setup is explicit and opt-in.
 
 ## Quick start
 
