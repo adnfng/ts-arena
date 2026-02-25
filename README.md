@@ -1,9 +1,10 @@
 <div align="center">
   <img src="./ts-arena.svg" alt="ts-arena logo" width="64" height="64" />
-  <h2>TS-ARENA</h2>
-  <p>an unofficial TypeScript SDK for the Are.na API.</p>
-  <a href="https://www.npmjs.com/package/ts-arena"><strong>NPM</strong></a> | <a href="./docs/schema.md">Docs</a> | <a href="./templates/TSARENA-AGENTS.md">Agents</a>
-    <div>
+  <h3>TS ARENA</h3>
+  <p>An unofficial TypeScript SDK for the Are.na API.</p>
+  <a href="./docs/schema.md">Docs</a> | <a href="./templates/TSARENA-AGENTS.md">Agents</a>
+  <br/><br/>
+  <div>
     <a href="https://gitviews.com/">
       <img src="https://gitviews.com/repo/adnfng/ts-arena.svg" alt="Repo Views" />
     </a>
@@ -12,14 +13,13 @@
 
 ---
 
-### 🪶 What Is TS-ARENA?
+### What Is TS-ARENA?
 
-**TS-ARENA** is a V3-first SDK for the Are.na REST API.
+**TS-ARENA** is a V3 SDK for the Are.na REST API.
 
 All you need is:
 
-- Node 18+ (or any runtime with `fetch`)
-- an API token for authenticated endpoints (`ARENA_TOKEN`)
+- (Optional) an API token for authenticated endpoints (`ARENA_TOKEN`)
 - this package installed in your project
 
 It gives you two explicit surfaces:
@@ -31,7 +31,7 @@ Because Are.na marks v3 as work in progress, endpoint behavior can change.
 
 ---
 
-### ⚙️ How It Works
+### How It Works
 
 1. Install the package:
 
