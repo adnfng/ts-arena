@@ -38,7 +38,7 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "postbuild:cjs": "node -e \"require('node:fs').writeFileSync('dist/cjs/package.json', JSON.stringify({ type: 'commonjs' }, null, 2) + '\\n')\"",
     "typecheck": "tsc -p tsconfig.esm.json --noEmit && tsc -p tsconfig.test.json --noEmit",
-    "test": "npm run build && node --import tsx --test tests/**/*.test.ts"
+    "test": "npm run build && node --import tsx --test tests/*.test.ts tests/**/*.test.ts"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",
