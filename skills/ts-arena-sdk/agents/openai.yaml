@@ -1,0 +1,7 @@
+interface:
+  display_name: "ts-arena SDK"
+  short_description: "Use ts-arena with V3-first Are.na integration."
+  default_prompt: "Use $ts-arena-sdk to implement this Are.na integration with ts-arena, preferring v3 methods and only using legacyV2 for documented gaps."
+
+policy:
+  allow_implicit_invocation: true
