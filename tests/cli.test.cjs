@@ -18,5 +18,6 @@ test("init-agents creates TSARENA-AGENTS.md in current project", () => {
   const generatedPath = join(cwd, "TSARENA-AGENTS.md");
   const contents = readFileSync(generatedPath, "utf8");
   assert.match(contents, /# TSARENA-AGENTS/);
-  assert.match(contents, /Use Are\.na V3 as the default API surface\./);
+  assert.match(contents, /## V3 endpoint map \(34 operations\)/);
+  assert.match(contents, /arena\.v3\.auth\.exchangeToken/);
 });
