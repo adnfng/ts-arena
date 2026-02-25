@@ -1,0 +1,44 @@
+{
+  "name": "ts-arena",
+  "version": "0.1.0",
+  "description": "V3-first TypeScript SDK for the Are.na API with explicit legacy V2 gap methods.",
+  "keywords": [
+    "are.na",
+    "arena",
+    "sdk",
+    "typescript",
+    "api-client"
+  ],
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "postbuild:cjs": "node -e \"require('node:fs').writeFileSync('dist/cjs/package.json', JSON.stringify({ type: 'commonjs' }, null, 2) + '\\n')\"",
+    "typecheck": "tsc -p tsconfig.esm.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
