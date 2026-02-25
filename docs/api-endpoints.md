@@ -1,0 +1,63 @@
+# API Endpoints
+
+This file maps `ts-arena` methods to Are.na endpoints.
+
+Auth levels follow the v3 docs model:
+
+- `Public`
+- `Optional`
+- `Required`
+
+Because v3 is actively changing, treat this as current guidance and still handle `401` and `403` at runtime.
+
+## V3 (34 methods)
+
+| SDK method | HTTP route | Auth level |
+| --- | --- | --- |
+| `arena.v3.auth.exchangeToken(input)` | `POST /v3/oauth/token` | Public |
+| `arena.v3.system.ping()` | `GET /v3/ping` | Public |
+| `arena.v3.system.openapi()` | `GET /v3/openapi` | Public |
+| `arena.v3.system.openapiJson()` | `GET /v3/openapi.json` | Public |
+| `arena.v3.search.query(input)` | `GET /v3/search` | Optional |
+| `arena.v3.blocks.get({ id })` | `GET /v3/blocks/{id}` | Optional |
+| `arena.v3.blocks.create(body)` | `POST /v3/blocks` | Required |
+| `arena.v3.blocks.update({ id, body })` | `PUT /v3/blocks/{id}` | Required |
+| `arena.v3.blocks.listComments({ id, ...query })` | `GET /v3/blocks/{id}/comments` | Optional |
+| `arena.v3.blocks.createComment({ id, body })` | `POST /v3/blocks/{id}/comments` | Required |
+| `arena.v3.blocks.listConnections({ id, ...query })` | `GET /v3/blocks/{id}/connections` | Optional |
+| `arena.v3.blocks.createBatch(body)` | `POST /v3/blocks/batch` | Required |
+| `arena.v3.blocks.getBatch({ batchId })` | `GET /v3/blocks/batch/{batch_id}` | Required |
+| `arena.v3.channels.get({ id })` | `GET /v3/channels/{id}` | Optional |
+| `arena.v3.channels.create(body)` | `POST /v3/channels` | Required |
+| `arena.v3.channels.update({ id, body })` | `PUT /v3/channels/{id}` | Required |
+| `arena.v3.channels.remove({ id })` | `DELETE /v3/channels/{id}` | Required |
+| `arena.v3.channels.listContents({ id, ...query })` | `GET /v3/channels/{id}/contents` | Optional |
+| `arena.v3.channels.listConnections({ id, ...query })` | `GET /v3/channels/{id}/connections` | Optional |
+| `arena.v3.channels.listFollowers({ id, ...query })` | `GET /v3/channels/{id}/followers` | Optional |
+| `arena.v3.connections.get({ id })` | `GET /v3/connections/{id}` | Optional |
+| `arena.v3.connections.create(body)` | `POST /v3/connections` | Required |
+| `arena.v3.connections.move({ id, body })` | `POST /v3/connections/{id}/move` | Required |
+| `arena.v3.connections.remove({ id })` | `DELETE /v3/connections/{id}` | Required |
+| `arena.v3.comments.remove({ id })` | `DELETE /v3/comments/{id}` | Required |
+| `arena.v3.users.getCurrent()` | `GET /v3/me` | Required |
+| `arena.v3.users.get({ id })` | `GET /v3/users/{id}` | Optional |
+| `arena.v3.users.listContents({ id, ...query })` | `GET /v3/users/{id}/contents` | Optional |
+| `arena.v3.users.listFollowers({ id, ...query })` | `GET /v3/users/{id}/followers` | Optional |
+| `arena.v3.users.listFollowing({ id, ...query })` | `GET /v3/users/{id}/following` | Optional |
+| `arena.v3.groups.get({ id })` | `GET /v3/groups/{id}` | Optional |
+| `arena.v3.groups.listContents({ id, ...query })` | `GET /v3/groups/{id}/contents` | Optional |
+| `arena.v3.groups.listFollowers({ id, ...query })` | `GET /v3/groups/{id}/followers` | Optional |
+| `arena.v3.uploads.presign(body)` | `POST /v3/uploads/presign` | Required |
+
+## Legacy V2 fallback (deprecated)
+
+Use only when V3 does not cover the feature.
+
+| SDK method | HTTP route | Auth guidance |
+| --- | --- | --- |
+| `arena.legacyV2.channels.list()` | `GET /v2/channels` | Optional / token recommended |
+| `arena.legacyV2.channels.thumb({ slug })` | `GET /v2/channels/{slug}/thumb` | Optional / token recommended |
+| `arena.legacyV2.channels.getCollaborators({ id })` | `GET /v2/channels/{id}/collaborators` | Required |
+| `arena.legacyV2.channels.addCollaborator({ id, userId })` | `POST /v2/channels/{id}/collaborators` | Required |
+| `arena.legacyV2.channels.removeCollaborator({ id, userId })` | `DELETE /v2/channels/{id}/collaborators` | Required |
+| `arena.legacyV2.users.primaryChannel({ id })` | `GET /v2/users/{id}/channel` | Optional / token recommended |
