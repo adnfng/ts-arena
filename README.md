@@ -2,7 +2,12 @@
   <img src="./ts-arena.svg" alt="ts-arena logo" width="64" height="64" />
   <h2>TS-ARENA</h2>
   <p>an unofficial TypeScript SDK for the Are.na API.</p>
-  <a href="https://www.npmjs.com/package/ts-arena">Visit <strong>NPM</strong></a> | <a href="./docs/schema.md">Docs</a> | <a href="./templates/TSARENA-AGENTS.md">Agents</a>
+  <a href="https://www.npmjs.com/package/ts-arena"><strong>NPM</strong></a> | <a href="./docs/schema.md">Docs</a> | <a href="./templates/TSARENA-AGENTS.md">Agents</a>
+    <div>
+    <a href="https://gitviews.com/">
+      <img src="https://gitviews.com/repo/adnfng/ts-arena.svg" alt="Repo Views" />
+    </a>
+  </div>
 </div>
 
 ---
