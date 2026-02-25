@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import Arena from "../dist/esm/index.js";
+import Arena from "../src/index.js";
 import { createMockFetch } from "./helpers/mock-fetch.js";
 
 test("legacyV2 routes target v2 endpoints and custom base URL", async () => {

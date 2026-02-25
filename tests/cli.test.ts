@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
-const CLI_PATH = join(process.cwd(), "bin", "ts-arena.mjs");
+const CLI_PATH = join(process.cwd(), "dist", "esm", "cli.js");
 
 test("init-agents creates TSARENA-AGENTS.md in current project", () => {
   const cwd = mkdtempSync(join(tmpdir(), "ts-arena-cli-"));

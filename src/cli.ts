@@ -16,19 +16,28 @@ Options:
   --force      Overwrite an existing TSARENA-AGENTS.md file.
 `;
 
-function getTemplatePath() {
-  const binDir = dirname(fileURLToPath(import.meta.url));
-  return join(binDir, "..", "templates", "TSARENA-AGENTS.md");
+function getTemplatePath(): string {
+  const currentDir = dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    join(currentDir, "..", "..", "templates", "TSARENA-AGENTS.md"),
+    join(currentDir, "..", "templates", "TSARENA-AGENTS.md")
+  ];
+
+  for (const path of candidates) {
+    if (existsSync(path)) {
+      return path;
+    }
+  }
+
+  throw new Error("Could not locate templates/TSARENA-AGENTS.md");
 }
 
-function initAgents(force = false) {
+function initAgents(force = false): void {
   const targetDir = process.cwd();
   const targetPath = join(targetDir, "TSARENA-AGENTS.md");
 
   if (existsSync(targetPath) && !force) {
-    console.error(
-      "TSARENA-AGENTS.md already exists. Re-run with --force to overwrite."
-    );
+    console.error("TSARENA-AGENTS.md already exists. Re-run with --force to overwrite.");
     process.exit(1);
   }
 

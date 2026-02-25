@@ -4,5 +4,8 @@
     "module": "CommonJS",
     "outDir": "dist/cjs",
     "declaration": false
-  }
+  },
+  "exclude": [
+    "src/cli.ts"
+  ]
 }

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import Arena from "../dist/esm/index.js";
+import Arena from "../src/index.js";
 
 test("Arena exposes v3 and legacyV2 namespaces", () => {
   const arena = new Arena();

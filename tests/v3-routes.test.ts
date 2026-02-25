@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import Arena from "../dist/esm/index.js";
+import Arena from "../src/index.js";
 import { createMockFetch, toHeaders } from "./helpers/mock-fetch.js";
 
 test("v3.blocks methods hit expected routes and payloads", async () => {

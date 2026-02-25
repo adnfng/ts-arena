@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import Arena, { ArenaApiError } from "../dist/esm/index.js";
+import Arena, { ArenaApiError } from "../src/index.js";
 
 function jsonResponse(body: unknown, init: { status?: number; headers?: Record<string, string> } = {}): Response {
   return new Response(JSON.stringify(body), {
@@ -21,7 +21,7 @@ test("v3 requests include bearer token by default", async () => {
 
   const arena = new Arena({
     token: "secret-token",
-    fetch: async (_url, init) => {
+    fetch: async (_url: RequestInfo | URL, init?: RequestInit) => {
       const headers = toHeaders(init?.headers);
       seenAuth = headers.get("authorization");
       return jsonResponse({ ok: true });
@@ -39,7 +39,7 @@ test("oauth token exchange uses form encoding and skips bearer auth", async () =
 
   const arena = new Arena({
     token: "secret-token",
-    fetch: async (_url, init) => {
+    fetch: async (_url: RequestInfo | URL, init?: RequestInit) => {
       const headers = toHeaders(init?.headers);
       seenAuth = headers.get("authorization");
       seenContentType = headers.get("content-type");
@@ -68,7 +68,7 @@ test("search serializes array query params as comma-separated values", async () 
   let seenUrl = "";
 
   const arena = new Arena({
-    fetch: async (url) => {
+    fetch: async (url: RequestInfo | URL) => {
       seenUrl = String(url);
       return jsonResponse({
         data: [],
