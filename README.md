@@ -11,7 +11,11 @@
   </div>
 </div>
 
+
+
 ---
+
+
 
 ### What Is TS-ARENA?
 
@@ -29,9 +33,13 @@ It gives you two explicit surfaces:
 
 Because Are.na marks v3 as work in progress, endpoint behavior can change.
 
+
+
 ---
 
-### How It Works
+
+
+### Getting Started
 
 1. Install the package:
 
@@ -55,8 +63,9 @@ const arena = new Arena({
 const channel = await arena.v3.channels.get({ id: "arena-influences" });
 ```
 
-4. Optional: generate an agent guide in your project root:
+4. Working with an Agent? Run:
 
 ```bash
 npx ts-arena init-agents
 ```
+To generate an agent guide in your project root, the direct Claude/Cursor or any agent to follow the guide.
