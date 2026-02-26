@@ -16,6 +16,7 @@ export type {
   RetryOptions
 } from "./core/types.js";
 export { ArenaApiError } from "./core/errors.js";
+export { toTempSourceUrl } from "./v3/uploads.js";
 
 export * from "./v3/types.js";
 export * from "./legacy-v2/types.js";

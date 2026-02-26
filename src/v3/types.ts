@@ -13,7 +13,6 @@ export type V3Followable = V3Entity;
 export type V3PingResponse = V3Entity;
 export type V3BatchCreateResponse = V3Entity;
 export type V3BatchStatusResponse = V3Entity;
-export type V3PresignResponse = V3Entity;
 
 export type ChannelId = string | number;
 
@@ -185,6 +184,17 @@ export interface V3PresignFile {
 
 export interface V3PresignInput {
   files: V3PresignFile[];
+}
+
+export interface V3PresignedFile {
+  upload_url: string;
+  key: string;
+  content_type: string;
+}
+
+export interface V3PresignResponse {
+  files: V3PresignedFile[];
+  expires_in: number;
 }
 
 export interface V3ExchangeTokenInput {
