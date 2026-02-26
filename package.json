@@ -13,7 +13,7 @@
   "author": "",
   "type": "module",
   "bin": {
-    "ts-arena": "./dist/esm/cli.js"
+    "ts-arena": "dist/esm/cli.js"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
