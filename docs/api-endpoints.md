@@ -49,6 +49,11 @@ Because v3 is actively changing, treat this as current guidance and still handle
 | `arena.v3.groups.listFollowers({ id, ...query })` | `GET /v3/groups/{id}/followers` | Optional |
 | `arena.v3.uploads.presign(body)` | `POST /v3/uploads/presign` | Required |
 
+Upload helper:
+
+- `toTempSourceUrl(key)` => `https://s3.amazonaws.com/arena_images-temp/<encoded-key>`
+- also available as `arena.v3.uploads.toTempSourceUrl(key)`
+
 ## Legacy V2 fallback (deprecated)
 
 Use only when V3 does not cover the feature.

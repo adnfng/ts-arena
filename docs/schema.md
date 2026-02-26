@@ -86,3 +86,45 @@ Expected response shape:
 - `403` insufficient permissions
 - `404` not found
 - `429` rate limited
+
+## Canonical upload flow
+
+Use this sequence for file uploads:
+
+1. `presign` to get `upload_url` and `key`
+2. `PUT` the file bytes to `upload_url`
+3. create a block using `toTempSourceUrl(key)` as `value`
+
+```ts
+import Arena, { toTempSourceUrl } from "ts-arena";
+
+const arena = new Arena({ token: process.env.ARENA_TOKEN });
+
+const presign = await arena.v3.uploads.presign({
+  files: [{ filename: "image 41.png", content_type: "image/png" }]
+});
+
+const file = presign.files[0];
+
+await fetch(file.upload_url, {
+  method: "PUT",
+  headers: { "Content-Type": file.content_type },
+  body: imageBlob
+});
+
+await arena.v3.blocks.create({
+  value: toTempSourceUrl(file.key),
+  channel_ids: ["my-channel-slug"]
+});
+```
+
+### Browser CORS caveat
+
+Direct browser `PUT` to the presigned URL can fail depending on storage CORS policy.
+
+If your browser client cannot `PUT` directly:
+
+- upload through a server endpoint, or
+- upload through an edge worker/proxy that you control.
+
+Then pass the resulting key through `toTempSourceUrl(key)` when creating the block.
