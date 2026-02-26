@@ -1,6 +1,6 @@
 {
   "name": "ts-arena",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "V3-first TypeScript SDK for the Are.na API with explicit legacy V2 gap methods.",
   "keywords": [
     "are.na",
